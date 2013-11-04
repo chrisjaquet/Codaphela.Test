@@ -1,18 +1,15 @@
 #include "BaseLib/FastFunctions.h"
 #include "CoreLib/Indexes.h"
 #include "TestLib/Assert.h"
-#include "TestIndexes.h"
+
 
 
 //////////////////////////////////////////////////////////////////////////
 //
 //
 //////////////////////////////////////////////////////////////////////////
-void TestIndexes(void)
+void TestIndexesSomething(void)
 {
-	FastFunctionsInit();
-	BeginTests();
-
 	CIndexes		cIndexes;
 	char			szOne[] = "One";
 	char			szTwo[] = "Two";
@@ -48,9 +45,10 @@ void TestIndexes(void)
 	szTemp = (char*)cIndexes.Get(268472648234LL);
 	AssertString(szTwo, szTemp);
 
-	cIndexes.Add(17LL, szFour);
+	bResult = cIndexes.Add(17LL, szFour);
+	AssertFalse(bResult);
 	szTemp = (char*)cIndexes.Get(17LL);
-	AssertString(szFour, szTemp);
+	AssertString(szOne, szTemp);
 	AssertInt(11, cIndexes.TestNumLevels());
 
 	bResult = cIndexes.Remove(17LL);
@@ -65,7 +63,104 @@ void TestIndexes(void)
 	bResult = cIndexes.Remove(268472648234LL);
 	AssertBool(TRUE, bResult);
 	AssertInt(0, cIndexes.TestNumLevels());
+}
 
+
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+void TestIndexesIteration(void)
+{
+	CIndexes			cIndexes;
+	void*				pvMem;
+	void*				pvTest;
+	int					i;
+	SIndexesIterator	sIter;
+
+	i = 15;
+	pvMem = &i;
+
+	cIndexes.Init(512);
+	cIndexes.Add(2, pvMem);
+	pvTest = cIndexes.Get(2);
+	AssertPointer(pvMem, pvTest);
+
+	cIndexes.Add(255, pvMem);
+	cIndexes.Add(256, pvMem);
+	cIndexes.Add(260, pvMem);
+	cIndexes.Add(0x0000708a9bcd5500LL, pvMem);
+	cIndexes.Add(0x0000708a9bcd5501LL, pvMem);
+	cIndexes.Add(0x0000708a9bcd55FFLL, pvMem);
+	cIndexes.Add(0x0000720000000101LL, pvMem);
+	cIndexes.Add(0x0000720000000102LL, pvMem);
+
+	AssertLongLongInt(2, cIndexes.StartIteration(&sIter));
+	AssertLongLongInt(255, cIndexes.Iterate(&sIter));
+
+	AssertLongLongInt(256, cIndexes.Iterate(&sIter));
+	AssertLongLongInt(260, cIndexes.Iterate(&sIter));
+
+	AssertLongLongInt(0x0000708a9bcd5500LL, cIndexes.Iterate(&sIter));
+	AssertLongLongInt(0x0000708a9bcd5501LL, cIndexes.Iterate(&sIter));
+	AssertLongLongInt(0x0000708a9bcd55FFLL, cIndexes.Iterate(&sIter));
+	AssertLongLongInt(0x0000720000000101LL, cIndexes.Iterate(&sIter));
+	AssertLongLongInt(0x0000720000000102LL, cIndexes.Iterate(&sIter));
+
+	AssertLongLongInt(INVALID_O_INDEX, cIndexes.Iterate(&sIter));
+
+	cIndexes.Kill();
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+void TestIndexesAddAndRemove(void)
+{
+	CIndexes			cIndexes;
+	void*				pvMem;
+	int					i;
+
+	i = 391287491;
+	pvMem = &i;
+
+	cIndexes.Init(512);
+	AssertInt(0, (int)cIndexes.NumIndexed());
+	
+	cIndexes.Add(1, pvMem);
+	AssertInt(1, (int)cIndexes.NumIndexed());
+
+	cIndexes.Remove(1);
+	AssertInt(0, (int)cIndexes.NumIndexed());
+	AssertTrue(cIndexes.TestTopIsEmpty());
+
+	cIndexes.Add(1, pvMem);
+	AssertInt(1, (int)cIndexes.NumIndexed());
+
+	cIndexes.Remove(1);
+	AssertInt(0, (int)cIndexes.NumIndexed());
+	AssertTrue(cIndexes.TestTopIsEmpty());
+
+	cIndexes.Kill();
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+void TestIndexes(void)
+{
+	FastFunctionsInit();
+	BeginTests();
+
+	TestIndexesSomething();
+	TestIndexesIteration();
+	TestIndexesAddAndRemove();
+	
 	TestStatistics();
 	FastFunctionsKill();
 }

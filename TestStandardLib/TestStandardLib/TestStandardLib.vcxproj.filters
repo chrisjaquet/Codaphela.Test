@@ -58,11 +58,32 @@
     <Filter Include="Source\Object\Object\Pointer">
       <UniqueIdentifier>{a820a87c-b4fd-4ba6-82b7-6e2aa417382b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Object\Object\IO\Graph">
+    <Filter Include="Source\Object\Object\Serialisation">
+      <UniqueIdentifier>{6ee4bb77-57bd-496f-80b6-636bb30f6a8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Object\Object\Serialisation\Graph">
       <UniqueIdentifier>{46a81763-5ffd-4dec-9270-8f6ea7f34c37}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Object\Object\IO\Writing">
-      <UniqueIdentifier>{92e58568-da5c-4cf6-8814-1f42abaf643e}</UniqueIdentifier>
+    <Filter Include="Source\Object\Object\IO\Chunked">
+      <UniqueIdentifier>{7bc16bbe-a25f-472e-a6ed-52717855b07c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Object\Object\IO\Simple">
+      <UniqueIdentifier>{f553194d-9fd0-466f-a948-cf4476b96f44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Object\Object\Collection">
+      <UniqueIdentifier>{3d0ea913-1f78-4626-b4db-803d877cd650}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Object\Object\Collection\Common">
+      <UniqueIdentifier>{09217f32-ea61-4b1e-a5cc-9d6bd6bb9500}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Object\Object\Collection\Array">
+      <UniqueIdentifier>{7ee6331e-5685-4a4b-9050-cbd30834e472}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Object\Object\Collection\Set">
+      <UniqueIdentifier>{a0b7fbe2-0aba-4aec-a99d-b55664c9dc19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Object\Object\Distance">
+      <UniqueIdentifier>{c71ff53c-ed92-4c82-9370-616a46a484a4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -147,14 +168,77 @@
     <ClCompile Include="TestPointer.cpp">
       <Filter>Source\Object\Object\Pointer</Filter>
     </ClCompile>
-    <ClCompile Include="TestObjectGraphWriter.cpp">
-      <Filter>Source\Object\Object\IO\Graph</Filter>
+    <ClCompile Include="ObjectWriterChunkedTestClasses.cpp">
+      <Filter>Source\Object\Object\IO\Chunked</Filter>
     </ClCompile>
     <ClCompile Include="TestObjectWriterChunked.cpp">
-      <Filter>Source\Object\Object\IO\Writing</Filter>
+      <Filter>Source\Object\Object\IO\Chunked</Filter>
     </ClCompile>
-    <ClCompile Include="ObjectWriterChunkedTestClasses.cpp">
-      <Filter>Source\Object\Object\IO\Writing</Filter>
+    <ClCompile Include="TestObjectReaderChunked.cpp">
+      <Filter>Source\Object\Object\IO\Chunked</Filter>
+    </ClCompile>
+    <ClCompile Include="TestObjectGraphSerialiser.cpp">
+      <Filter>Source\Object\Object\Serialisation\Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="TestObjectGraphDeserialiser.cpp">
+      <Filter>Source\Object\Object\Serialisation\Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="TestObjectReaderSimple.cpp">
+      <Filter>Source\Object\Object\IO\Simple</Filter>
+    </ClCompile>
+    <ClCompile Include="TestArrayCommonObject.cpp">
+      <Filter>Source\Object\Object\Collection\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="TestObjectsSimple.cpp">
+      <Filter>Source\Object\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="TestNamedObject.cpp">
+      <Filter>Source\Object\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="NamedObjectTestClasses.cpp">
+      <Filter>Source\Object\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="TestDehollowfication.cpp">
+      <Filter>Source\Object\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="TestObjectAllocator.cpp">
+      <Filter>Source\Object\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="TestKill.cpp">
+      <Filter>Source\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectTestSetup.cpp">
+      <Filter>Source\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="TestUsage.cpp">
+      <Filter>Source\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="TestArray.cpp">
+      <Filter>Source\Object\Object\Collection\Array</Filter>
+    </ClCompile>
+    <ClCompile Include="TestSet.cpp">
+      <Filter>Source\Object\Object\Collection\Set</Filter>
+    </ClCompile>
+    <ClCompile Include="TestEmbedded.cpp">
+      <Filter>Source\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="EmbeddedObjectTestClasses.cpp">
+      <Filter>Source\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="TestEmbeddedObjectRemapTos.cpp">
+      <Filter>Source\Object\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="TestObjectStackPointers.cpp">
+      <Filter>Source\Object\Object\Pointer</Filter>
+    </ClCompile>
+    <ClCompile Include="TestStackPointers.cpp">
+      <Filter>Source\Object\Object\Pointer</Filter>
+    </ClCompile>
+    <ClCompile Include="TestDistToRootCalculator.cpp">
+      <Filter>Source\Object\Object\Distance</Filter>
+    </ClCompile>
+    <ClCompile Include="TestDistToStackCalculator.cpp">
+      <Filter>Source\Object\Object\Distance</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -168,10 +252,20 @@
       <Filter>Source\Object\Unknown</Filter>
     </ClInclude>
     <ClInclude Include="ObjectWriterChunkedTestClasses.h">
-      <Filter>Source\Object\Object\IO\Writing</Filter>
+      <Filter>Source\Object\Object\IO\Chunked</Filter>
+    </ClInclude>
+    <ClInclude Include="NamedObjectTestClasses.h">
+      <Filter>Source\Object\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectTestSetup.h">
+      <Filter>Source\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="EmbeddedObjectTestClasses.h">
+      <Filter>Source\Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Log.txt" />
+    <None Include="DebugDefines.txt" />
   </ItemGroup>
 </Project>

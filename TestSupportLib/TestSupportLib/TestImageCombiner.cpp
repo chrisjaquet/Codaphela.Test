@@ -3,7 +3,7 @@
 #include "BaseLib/FileUtil.h"
 #include "BaseLib/NaiveFile.h"
 #include "CoreLib/TypeConverter.h"
-#include "StandardLib/Unknowns.h"
+#include "StandardLib/Objects.h"
 #include "SupportLib/ImageReader.h"
 #include "SupportLib/ImageWriter.h"
 #include "SupportLib/ImageCelsSource.h"
@@ -24,9 +24,11 @@ void TestImageCombinerMask(void)
 
 	CImageCelSourceBorders	cBorder;
 	CImageCombiner			cCombiner;
-	CImage					cImage;
+	Ptr<CImage>				pcImage;
 	CImageCelsSource		cSource;
 	SImageColour			sColour;
+
+	ObjectsInit();
 
 	sColour.c[0] = 0;
 	sColour.c[1] = 0;
@@ -41,17 +43,19 @@ void TestImageCombinerMask(void)
 
 	cSource.Load();
 
-	cCombiner.Init(&cImage, ICL_Best, ICS_Arbitrary, ICC_FromCels);
+	cCombiner.Init(ICL_Best, ICS_Arbitrary, ICC_FromCels);
 	cCombiner.AddCels(cSource.GetCels());
-	cCombiner.Combine();
+	pcImage = cCombiner.Combine();
 
-	WriteImage(&cImage, "Output\\CombineMask.png");
-	WriteImage(&cImage, "Output\\CombineMask.raw");
-	AssertFileMemory("input\\CombineMask.raw", cImage.mcChannels.GetData(), cImage.GetByteSize());
+	WriteImage(&pcImage, "Output\\CombineMask.png");
+	WriteImage(&pcImage, "Output\\CombineMask.raw");
+	AssertFileMemory("input\\CombineMask.raw", pcImage->mcChannels.GetData(), pcImage->GetByteSize());
 
-	cImage.Kill();
+	pcImage->Kill();
 	cCombiner.Kill();
 	cSource.Kill();
+
+	ObjectsKill();
 }
 
 

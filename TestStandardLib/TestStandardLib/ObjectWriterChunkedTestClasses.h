@@ -2,26 +2,27 @@
 #define __OBJECT_WRITER_CHUNKED_TEST_CLASSES_H__
 #include "StandardLib/Object.h"
 #include "StandardLib/NamedObject.h"
-#include "StandardLib/Array.h"
+#include "StandardLib/ArrayObject.h"
+#include "StandardLib/String.h"
 
 
 class CTestWithArray : public CNamedObject
 {
 BASE_FUNCTIONS(CTestWithArray);
-protected:
-	CPointer<CArray>	mcArray;
-
 public:
-	CChars				mszString;
-	int					mx;
+	Ptr<CArrayObject>	mcArray;
 
-	void Init(char* szString, int x);
-	void Kill(void);
+	CChars		mszString;
+	int			mx;
 
-	void Add(CPointerObject pcObject);
+	Ptr<CTestWithArray>	Init(char* szString, int x);
+	void				Class(void);
+	void				KillData(void);
 
-	BOOL Save(CObjectSerialiser* pcFile);
-	BOOL Load(CObjectDeserialiser* pcFile);
+	void				Add(CPointer& pcObject);
+
+	BOOL				Save(CObjectSerialiser* pcFile);
+	BOOL				Load(CObjectDeserialiser* pcFile);
 };
 
 
@@ -33,12 +34,49 @@ public:
 	int my; 
 	int mz;
 
-	void Init(int x, int y, int z);
-	void Kill(void);
+	Ptr<CTestInteger>	Init(int x, int y, int z);
+	void				Class(void);
+	void				KillData(void);
 
-	BOOL Save(CObjectSerialiser* pcFile);
-	BOOL Load(CObjectDeserialiser* pcFile);
+	BOOL				Save(CObjectSerialiser* pcFile);
+	BOOL				Load(CObjectDeserialiser* pcFile);
+};
+
+
+class CTestNamedString : public CNamedObject
+{
+BASE_FUNCTIONS(CTestNamedString);
+public:
+	Ptr<CString>			mszString;
+	Ptr<CTestNamedString>	mpAnother;
+	CChars					mszEmbedded;
+
+	Ptr<CTestNamedString>	Init(Ptr<CString> szString, Ptr<CTestNamedString> pAnother, char* szEmbedded);
+	void					Class(void);
+	void					KillData(void);
+
+	BOOL					Save(CObjectSerialiser* pcFile);
+	BOOL					Load(CObjectDeserialiser* pcFile);
+};
+
+
+class CTestDoubleNamedString : public CNamedObject
+{
+BASE_FUNCTIONS(CTestDoubleNamedString);
+public:
+	Ptr<CString>			mszString;
+	Ptr<CTestNamedString>	mpSplit2;
+	Ptr<CTestNamedString>	mpSplit1;
+
+	Ptr<CTestDoubleNamedString>	Init(void);
+	Ptr<CTestDoubleNamedString>	Init(Ptr<CString> szString, Ptr<CTestNamedString> pSplit2, Ptr<CTestNamedString> pSplit1);
+	void						Class(void);
+	void						KillData(void);
+
+	BOOL						Save(CObjectSerialiser* pcFile);
+	BOOL						Load(CObjectDeserialiser* pcFile);
 };
 
 
 #endif // __OBJECT_WRITER_CHUNKED_TEST_CLASSES_H__
+

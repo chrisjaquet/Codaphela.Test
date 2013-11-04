@@ -1,4 +1,3 @@
-#include "TestTransientIndexedFile.h"
 #include "TestLib/Assert.h"
 #include "CoreLib/TransientIndexedFile.h"
 #include "BaseLib/FastFunctions.h"
@@ -6,7 +5,7 @@
 #include "CoreLib/TypeConverter.h"
 
 
-#define AssertCacheConsistency(t)	EmbreakFailure(PrivateAssertCacheConsistency(t, __LINE__, __FILE__))
+#define AssertCacheConsistency(t)	Validate(PrivateAssertCacheConsistency(t, __LINE__, __FILE__))
 
 
 //////////////////////////////////////////////////////////////////////////

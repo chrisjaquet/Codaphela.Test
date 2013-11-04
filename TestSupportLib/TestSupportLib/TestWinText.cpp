@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "StandardLib/Objects.h"
 #include "SupportLib/WinText.h"
 #include "SupportLib/ImageReader.h"
 #include "SupportLib/ImageWriter.h"
@@ -15,9 +16,11 @@ void TestWinText(void)
 {
 	BeginTests();
 
+	ObjectsInit();
+
 	CWinText			cWinText;
 	SWinFontInstance*	psWinFont;
-	CFont*				pcFont;
+	Ptr<CFont>			pcFont;
 	CGlyph*				pcCel;
 	CImage				cDestImage;
 
@@ -25,7 +28,7 @@ void TestWinText(void)
 	psWinFont = cWinText.Create("Fixedsys", 0, 0, FW_DONTCARE);
 	pcFont = cWinText.GenerateFont(psWinFont, "Fixedsys");
 
-	WriteImage(pcFont->GetImage(), "Output/Fixedsys.bmp");
+	WriteImage(&pcFont->GetImage(), "Output/Fixedsys.bmp");
 	AssertFile("Input/Fixedsys.bmp", "Output/Fixedsys.bmp");
 
 	pcCel = pcFont->GetGlyph('H');
@@ -39,6 +42,8 @@ void TestWinText(void)
 
 	pcFont->Kill();
 	cWinText.Kill();
+
+	ObjectsKill();
 
 	TestStatistics();
 }

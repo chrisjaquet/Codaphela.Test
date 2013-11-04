@@ -45,11 +45,12 @@
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\gameengine\CommonLibraries;$(IncludePath)</IncludePath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\gameengine\CommonLibraries;$(IncludePath)</IncludePath>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;BREAK_ON_WARNING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -90,13 +91,33 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="EmbeddedObjectTestClasses.cpp" />
+    <ClCompile Include="NamedObjectTestClasses.cpp" />
+    <ClCompile Include="ObjectTestSetup.cpp" />
     <ClCompile Include="ObjectWriterChunkedTestClasses.cpp" />
+    <ClCompile Include="TestArray.cpp" />
+    <ClCompile Include="TestArrayCommonObject.cpp" />
     <ClCompile Include="TestChunkFileNames.cpp" />
+    <ClCompile Include="TestDehollowfication.cpp" />
+    <ClCompile Include="TestDistToRootCalculator.cpp" />
+    <ClCompile Include="TestDistToStackCalculator.cpp" />
+    <ClCompile Include="TestEmbedded.cpp" />
+    <ClCompile Include="TestEmbeddedObjectRemapTos.cpp" />
+    <ClCompile Include="TestKill.cpp" />
     <ClCompile Include="TestNamedIndexes.cpp" />
+    <ClCompile Include="TestNamedObject.cpp" />
+    <ClCompile Include="TestObjectAllocator.cpp" />
     <ClCompile Include="TestObjectConverter.cpp" />
+    <ClCompile Include="TestObjectGraphDeserialiser.cpp" />
+    <ClCompile Include="TestObjectReaderChunked.cpp" />
+    <ClCompile Include="TestObjectReaderSimple.cpp" />
     <ClCompile Include="TestObjects.cpp" />
+    <ClCompile Include="TestObjectsSimple.cpp" />
+    <ClCompile Include="TestObjectStackPointers.cpp" />
     <ClCompile Include="TestObjectWriterChunked.cpp" />
     <ClCompile Include="TestPointer.cpp" />
+    <ClCompile Include="TestSet.cpp" />
+    <ClCompile Include="TestStackPointers.cpp" />
     <ClCompile Include="TestStandardLib.cpp" />
     <ClCompile Include="TestChannelAccessor.cpp" />
     <ClCompile Include="TestChannelPadder.cpp" />
@@ -109,8 +130,9 @@
     <ClCompile Include="ObjectTestClasses.cpp" />
     <ClCompile Include="TestObject.cpp" />
     <ClCompile Include="TestRoot.cpp" />
-    <ClCompile Include="TestObjectGraphWriter.cpp" />
+    <ClCompile Include="TestObjectGraphSerialiser.cpp" />
     <ClCompile Include="TestUnknowns.cpp" />
+    <ClCompile Include="TestUsage.cpp" />
     <ClCompile Include="UnknownKillList.cpp" />
     <ClCompile Include="UnknownTestClasses.cpp" />
     <ClCompile Include="TestArrayType.cpp" />
@@ -122,12 +144,16 @@
     <ClCompile Include="TestClassStorage.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="EmbeddedObjectTestClasses.h" />
+    <ClInclude Include="NamedObjectTestClasses.h" />
     <ClInclude Include="ObjectTestClasses.h" />
+    <ClInclude Include="ObjectTestSetup.h" />
     <ClInclude Include="ObjectWriterChunkedTestClasses.h" />
     <ClInclude Include="UnknownKillList.h" />
     <ClInclude Include="UnknownTestClasses.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="DebugDefines.txt" />
     <None Include="Log.txt" />
   </ItemGroup>
   <ItemGroup>

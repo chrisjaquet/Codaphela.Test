@@ -4,21 +4,28 @@
 #include "ObjectWriterChunkedTestClasses.h"
 
 
-void CTestWithArray::Init(char* szString, int x)
+Ptr<CTestWithArray> CTestWithArray::Init(char* szString, int x)
 {
-	mcArray = OMalloc(CArray);
+	mcArray = OMalloc(CArrayObject);
 	mcArray->Init();
 	mszString.Init(szString);
 	mx = x;
+
+	return Ptr<CTestWithArray>(this);
 }
 
-void CTestWithArray::Kill(void)
+void CTestWithArray::Class(void)
+{
+	CObject::Class();
+	Pointer(mcArray.This());
+}
+
+void CTestWithArray::KillData(void)
 {
 	mszString.Kill();
-	CObject::Kill();
 }
 
-void CTestWithArray::Add(CPointerObject pcObject)
+void CTestWithArray::Add(CPointer& pcObject)
 {
 	mcArray->Add(pcObject);
 }
@@ -40,16 +47,22 @@ BOOL CTestWithArray::Load(CObjectDeserialiser* pcFile)
 }
 
 
-void CTestInteger::Init(int x, int y, int z)
+Ptr<CTestInteger> CTestInteger::Init(int x, int y, int z)
 {
 	mx = x;
 	my = y;
 	mz = z;
+	return Ptr<CTestInteger>(this);
 }
 
-void CTestInteger::Kill(void)
+void CTestInteger::Class(void)
 {
-	CObject::Kill();
+	CObject::Class();
+}
+
+
+void CTestInteger::KillData(void)
+{
 }
 
 BOOL CTestInteger::Save(CObjectSerialiser* pcFile)
@@ -63,6 +76,92 @@ BOOL CTestInteger::Save(CObjectSerialiser* pcFile)
 BOOL CTestInteger::Load(CObjectDeserialiser* pcFile)
 {
 	ReturnOnFalse(pcFile->ReadInt(&mx));
+	ReturnOnFalse(pcFile->ReadInt(&my));
+	ReturnOnFalse(pcFile->ReadInt(&mz));
+	return TRUE;
+}
+
+
+Ptr<CTestNamedString> CTestNamedString::Init(Ptr<CString> szString, Ptr<CTestNamedString> pAnother, char* szEmbedded)
+{
+	mszString = szString;
+	mpAnother = pAnother;
+	mszEmbedded.Init(szEmbedded);
+
+	return Ptr<CTestNamedString>(this);
+}
+
+void CTestNamedString::Class(void)
+{
+	CObject::Class();
+	Pointer(mszString.This());
+	Pointer(mpAnother.This());
+}
+
+void CTestNamedString::KillData(void)
+{
+}
+
+BOOL CTestNamedString::Save(CObjectSerialiser* pcFile)
+{
+	ReturnOnFalse(pcFile->WritePointer(mszString));
+	ReturnOnFalse(pcFile->WritePointer(mpAnother));
+	ReturnOnFalse(pcFile->WriteString(&mszEmbedded));
+	return TRUE;
+}
+
+BOOL CTestNamedString::Load(CObjectDeserialiser* pcFile)
+{
+	ReturnOnFalse(pcFile->ReadPointer(mszString.This()));
+	ReturnOnFalse(pcFile->ReadPointer(mpAnother.This()));
+	ReturnOnFalse(pcFile->ReadString(&mszEmbedded));
+	return TRUE;
+}
+
+
+Ptr<CTestDoubleNamedString> CTestDoubleNamedString::Init(void)
+{
+	mszString = ONull;
+	mpSplit1 = ONull;
+	mpSplit2 = ONull;
+
+	return Ptr<CTestDoubleNamedString>(this);
+}
+
+Ptr<CTestDoubleNamedString> CTestDoubleNamedString::Init(Ptr<CString> szString, Ptr<CTestNamedString> pSplit2, Ptr<CTestNamedString> pSplit1)
+{
+	mszString = szString;
+	mpSplit1 = pSplit1;
+	mpSplit2 = pSplit2;
+
+	return Ptr<CTestDoubleNamedString>(this);
+}
+
+void CTestDoubleNamedString::Class(void)
+{
+	CObject::Class();
+	Pointer(mszString.This());
+	Pointer(mpSplit1.This());
+	Pointer(mpSplit2.This());
+}
+
+void CTestDoubleNamedString::KillData(void)
+{
+}
+
+BOOL CTestDoubleNamedString::Save(CObjectSerialiser* pcFile)
+{
+	ReturnOnFalse(pcFile->WritePointer(mszString));
+	ReturnOnFalse(pcFile->WritePointer(mpSplit1));
+	ReturnOnFalse(pcFile->WritePointer(mpSplit2));
+	return TRUE;
+}
+
+BOOL CTestDoubleNamedString::Load(CObjectDeserialiser* pcFile)
+{
+	ReturnOnFalse(pcFile->ReadPointer(mszString.This()));
+	ReturnOnFalse(pcFile->ReadPointer(mpSplit1.This()));
+	ReturnOnFalse(pcFile->ReadPointer(mpSplit2.This()));
 	return TRUE;
 }
 

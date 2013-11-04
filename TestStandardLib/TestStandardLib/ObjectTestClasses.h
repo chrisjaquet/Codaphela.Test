@@ -15,14 +15,37 @@ class CTestObject : public CObject
 {
 BASE_FUNCTIONS(CTestObject);
 public:
-	CPointerObject				mpObject;
-	CPointer<CTestObject>		mpTest;
+	CPointer					mpObject;
+	Ptr<CTestObject>			mpTest;
 	STestObjectKilledNotifier*	mpsKilledNotifier;
 
-	void Init(STestObjectKilledNotifier* psKilledNotifier);
-	void Kill(void);
-	BOOL Save(CObjectSerialiser* pcFile);
-	BOOL Load(CObjectDeserialiser* pcFile);
+	Ptr<CTestObject>	Init(void);
+	Ptr<CTestObject>	Init(STestObjectKilledNotifier* psKilledNotifier);
+	Ptr<CTestObject>	Init(CPointer pObject, Ptr<CTestObject> pTest);
+	void				Class(void);
+	void				KillData(void);
+
+	BOOL				Save(CObjectSerialiser* pcFile);
+	BOOL				Load(CObjectDeserialiser* pcFile);
+};
+
+
+class CTestTriPointerObject : public CObject
+{
+BASE_FUNCTIONS(CTestTriPointerObject);
+public:
+	CPointer					mpObject1;
+	CPointer					mpObject2;
+	CPointer					mpObject3;
+	STestObjectKilledNotifier*	mpsKilledNotifier;
+
+	Ptr<CTestTriPointerObject>	Init(void);
+	Ptr<CTestTriPointerObject>	Init(STestObjectKilledNotifier* psKilledNotifier);
+	void						Class(void);
+	void						KillData(void);
+
+	BOOL						Save(CObjectSerialiser* pcFile);
+	BOOL						Load(CObjectDeserialiser* pcFile);
 };
 
 
@@ -30,16 +53,17 @@ class CTestSaveableObject1 : public CNamedObject
 {
 BASE_FUNCTIONS(CTestSaveableObject1);
 public:
-	CPointerObject		mpObject;
-	int					miInt;
-	CChars				mszString;
-	BOOL				mbSaved;
+	CPointer	mpObject;
+	int			miInt;
+	CChars		mszString;
+	BOOL		mbSaved;
 
-	void Init(void);
-	void Kill(void);
+	Ptr<CTestSaveableObject1>	Init(void);
+	void						Class(void);
+	void						KillData(void);
 
-	BOOL Save(CObjectSerialiser* pcFile);
-	BOOL Load(CObjectDeserialiser* pcFile);
+	BOOL						Save(CObjectSerialiser* pcFile);
+	BOOL						Load(CObjectDeserialiser* pcFile);
 };
 
 
@@ -47,16 +71,17 @@ class CTestSaveableObject2 : public CNamedObject
 {
 BASE_FUNCTIONS(CTestSaveableObject2);
 public:
-	char*							mpsz;
-	CPointer<CTestSaveableObject1>	mp1;
-	CPointerObject					mp2;
-	BOOL							mbSaved;
+	CChars						msz;
+	Ptr<CTestSaveableObject1>	mp1;
+	CPointer					mp2;
+	BOOL						mbSaved;
 
-	void Init(char* psz);
-	void Kill(void);
+	Ptr<CTestSaveableObject2>	Init(char* psz);
+	void						Class(void);
+	void						KillData(void);
 
-	BOOL Save(CObjectSerialiser* pcFile);
-	BOOL Load(CObjectDeserialiser* pcFile);
+	BOOL						Save(CObjectSerialiser* pcFile);
+	BOOL						Load(CObjectDeserialiser* pcFile);
 };
 
 

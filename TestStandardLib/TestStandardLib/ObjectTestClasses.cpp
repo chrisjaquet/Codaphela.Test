@@ -1,4 +1,5 @@
 #include "StandardLib/ObjectSerialiser.h"
+#include "StandardLib/ObjectDeserialiser.h"
 #include "ObjectTestClasses.h"
 
 
@@ -6,12 +7,25 @@
 //
 //
 //////////////////////////////////////////////////////////////////////////
-void CTestObject::Init(STestObjectKilledNotifier* psKilledNotifier)
+Ptr<CTestObject> CTestObject::Init(void)
+{
+	return Init(NULL);
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+Ptr<CTestObject> CTestObject::Init(STestObjectKilledNotifier* psKilledNotifier)
 {
 	mpsKilledNotifier = psKilledNotifier;
-	mpsKilledNotifier->bKilled = FALSE;
-	mpObject.Init(this);
-	mpTest.Init(this);
+	if (mpsKilledNotifier)
+	{
+		mpsKilledNotifier->bKilled = FALSE;
+	}
+
+	return this;
 }
 
 
@@ -19,12 +33,37 @@ void CTestObject::Init(STestObjectKilledNotifier* psKilledNotifier)
 //
 //
 //////////////////////////////////////////////////////////////////////////
-void CTestObject::Kill(void)
+Ptr<CTestObject> CTestObject::Init(CPointer pObject, Ptr<CTestObject> pTest)
 {
-	CObject::Kill();
-	mpsKilledNotifier->bKilled = TRUE;
+	mpObject = pObject;
+	mpTest = pTest;
+	return Init(NULL);
 }
 
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+void CTestObject::Class(void)
+{
+	CObject::Class();
+	Pointer(mpObject.This());
+	Pointer(mpTest.This());
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+void CTestObject::KillData(void)
+{
+	if (mpsKilledNotifier)
+	{
+		mpsKilledNotifier->bKilled = TRUE;
+	}
+}
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -46,15 +85,14 @@ BOOL CTestObject::Load(CObjectDeserialiser* pcFile)
 	return FALSE;
 }
 
+
 //////////////////////////////////////////////////////////////////////////
 //
 //
 //////////////////////////////////////////////////////////////////////////
-void CTestSaveableObject1::Init()
+Ptr<CTestTriPointerObject> CTestTriPointerObject::Init(void)
 {
-	miInt = 7;
-	mszString.Init();
-	mbSaved = FALSE;
+	return Init(NULL);
 }
 
 
@@ -62,7 +100,94 @@ void CTestSaveableObject1::Init()
 //
 //
 //////////////////////////////////////////////////////////////////////////
-void CTestSaveableObject1::Kill(void)
+Ptr<CTestTriPointerObject> CTestTriPointerObject::Init(STestObjectKilledNotifier* psKilledNotifier)
+{
+	mpsKilledNotifier = psKilledNotifier;
+	if (mpsKilledNotifier)
+	{
+		mpsKilledNotifier->bKilled = FALSE;
+	}
+
+	return this;
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+void CTestTriPointerObject::Class(void)
+{
+	CObject::Class();
+	Pointer(mpObject1.This());
+	Pointer(mpObject2.This());
+	Pointer(mpObject3.This());
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+void CTestTriPointerObject::KillData(void)
+{
+	if (mpsKilledNotifier)
+	{
+		mpsKilledNotifier->bKilled = TRUE;
+	}
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+BOOL CTestTriPointerObject::Save(CObjectSerialiser* pcFile)
+{
+	return FALSE;
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+BOOL CTestTriPointerObject::Load(CObjectDeserialiser* pcFile)
+{
+	return FALSE;
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+Ptr<CTestSaveableObject1> CTestSaveableObject1::Init()
+{
+	miInt = 7;
+	mszString.Init();
+	mbSaved = FALSE;
+
+	return Ptr<CTestSaveableObject1>(this);
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+void CTestSaveableObject1::Class(void)
+{
+	CObject::Class();
+	Pointer(mpObject.This());
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+void CTestSaveableObject1::KillData(void)
 {
 	mszString.Kill();
 }
@@ -74,8 +199,6 @@ void CTestSaveableObject1::Kill(void)
 //////////////////////////////////////////////////////////////////////////
 BOOL CTestSaveableObject1::Save(CObjectSerialiser* pcFile)
 {
-	ReturnOnFalse(SaveHeader(pcFile));
-
 	ReturnOnFalse(pcFile->WritePointer(mpObject));
 	ReturnOnFalse(pcFile->WriteInt(miInt));
 	ReturnOnFalse(pcFile->WriteString(&mszString));
@@ -91,17 +214,12 @@ BOOL CTestSaveableObject1::Save(CObjectSerialiser* pcFile)
 //////////////////////////////////////////////////////////////////////////
 BOOL CTestSaveableObject1::Load(CObjectDeserialiser* pcFile)
 {
-	return FALSE;
-}
+	ReturnOnFalse(pcFile->ReadPointer(mpObject.This()));
+	ReturnOnFalse(pcFile->ReadInt(&miInt));
+	ReturnOnFalse(pcFile->ReadString(&mszString));
 
-//////////////////////////////////////////////////////////////////////////
-//
-//
-//////////////////////////////////////////////////////////////////////////
-void CTestSaveableObject2::Init(char* psz)
-{
-	mpsz = psz;
 	mbSaved = FALSE;
+	return TRUE;
 }
 
 
@@ -109,8 +227,34 @@ void CTestSaveableObject2::Init(char* psz)
 //
 //
 //////////////////////////////////////////////////////////////////////////
-void CTestSaveableObject2::Kill(void)
+Ptr<CTestSaveableObject2> CTestSaveableObject2::Init(char* psz)
 {
+	msz.Init(psz);
+	mbSaved = FALSE;
+
+	return Ptr<CTestSaveableObject2>(this);
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+void CTestSaveableObject2::Class(void)
+{
+	CObject::Class();
+	Pointer(mp1.This());
+	Pointer(mp2.This());
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+void CTestSaveableObject2::KillData(void)
+{
+	msz.Kill();
 }
 
 
@@ -120,11 +264,9 @@ void CTestSaveableObject2::Kill(void)
 //////////////////////////////////////////////////////////////////////////
 BOOL CTestSaveableObject2::Save(CObjectSerialiser* pcFile)
 {
-	ReturnOnFalse(SaveHeader(pcFile));
-
-	pcFile->WriteString(mpsz);
 	pcFile->WritePointer(mp1);
 	pcFile->WritePointer(mp2);
+	pcFile->WriteString(&msz);
 	mbSaved = TRUE;
 	return TRUE;
 }
@@ -136,7 +278,10 @@ BOOL CTestSaveableObject2::Save(CObjectSerialiser* pcFile)
 //////////////////////////////////////////////////////////////////////////
 BOOL CTestSaveableObject2::Load(CObjectDeserialiser* pcFile)
 {
-	return FALSE;
+	pcFile->ReadPointer(mp1.This());
+	pcFile->ReadPointer(mp2.This());
+	pcFile->ReadString(&msz);
+	mbSaved = FALSE;
+	return TRUE;
 }
-
 

@@ -1,4 +1,4 @@
-#include "BaseLib/Logger.h"
+#include "BaseLib/Log.h"
 #include "BaseLib/FastFunctions.h"
 #include "CoreLib/FunctionCaller.h"
 #include "CoreLib/TypeConverter.h"
@@ -28,11 +28,11 @@ void TestResolve(void)
 	//Oi, this is tested in the wrong file!
 	gcLogger.Disable();
 	bResult = pcClass->AddField("Undefined", "anUnkown");
-	AssertBool(FALSE, bResult);
+	AssertFalse(bResult);
 
 	gcLogger.Disable();
 	bResult = pcClass->AddSuperClass("Undefined");
-	AssertBool(FALSE, bResult);
+	AssertFalse(bResult);
 	gcLogger.Enable();
 
 	cClassStorage.Kill();
